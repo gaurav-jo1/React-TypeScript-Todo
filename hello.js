@@ -1,4 +1,3 @@
-function greet(person, date) {
-    console.log("Hello ".concat(person, ", today is ").concat(date.toDateString(), "!"));
-}
-greet("Gaurav", new Date);
+// 1.Type Annotations on Variables
+var myName = "Alice";
+console.log(myName);
