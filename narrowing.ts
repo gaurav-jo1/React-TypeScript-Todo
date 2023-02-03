@@ -45,7 +45,7 @@ function multiplyValue(container: Container, factor: number) {
 type Fish = { swim: () => void };
 type Bird = { fly: () => void };
 type Human = { swim?: () => void; fly?: () => void };
- 
+
 function move(animal: Fish | Bird) {
   if ("swim" in animal) {
     return animal.swim();
@@ -58,23 +58,99 @@ function move(animal: Fish | Bird) {
 
 function logValue(x: Date | string) {
   if (x instanceof Date) {
-    console.log(x.toUTCString())
+    console.log(x.toUTCString());
   } else {
-    console.log(x.toUpperCase())
+    console.log(x.toUpperCase());
   }
 }
 
-const date = new Date()
+const date = new Date();
 
 // logValue(date)
 
 // 5. Assignments
 
-function padLeft(padding: number | string, input: string) {
-  if (typeof padding === "number") {
-    return " ".repeat(padding) + input;
+// function padLeft(padding: number | string, input: string) {
+//   if (typeof padding === "number") {
+//     return " ".repeat(padding) + input;
+//   }
+//   return padding + input;
+// }
+
+// padLeft(12,12)
+
+// 6. Control flow analysis
+
+function example2() {
+  let x: string | number | boolean;
+
+  x = Math.random() < 0.5;
+
+  console.log(x);
+
+  if (Math.random() < 0.5) {
+    console.log("Hello wolrd");
+  } else {
+    console.log(100);
   }
-  return padding + input;
+
+  return x;
 }
 
-padLeft(12,12)
+example2();
+
+// 7. Using type predicates
+
+interface Circle {
+  kind: "circle";
+  radius: number;
+}
+
+interface Square {
+  kind: "square";
+  sideLength: number;
+}
+
+type Shape = Circle | Square;
+
+function getArea(shape: Shape) {
+  if (shape.kind === "circle") {
+    return Math.PI * shape.radius ** 2;
+  }
+}
+
+// OR
+
+function getArea2(shape: Shape) {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+
+    case "square":
+      return shape.sideLength ** 2;
+  }
+}
+
+// 8. The Never type
+//  TypeScript will use a never type to represent a state which shouldn’t exist.
+
+// 8.1 Exhaustiveness checking
+
+function getArea3(shape: Shape) {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "square":
+      return shape.sideLength ** 2;
+    default:
+      const _exhaustiveCheck: never = shape;
+      return _exhaustiveCheck;
+  }
+}
+
+const circle:Circle = {
+  kind: "circle",
+  radius: 2
+}
+
+console.log(getArea3(circle))
